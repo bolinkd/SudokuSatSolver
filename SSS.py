@@ -1,6 +1,33 @@
 import sys
 
 
+def uniqueInteger(xijkList):
+	unqiueList = xijkList
+	for i in range(0,len(xijkList)):
+		uniqueValue = 0
+		xijk = xijkList[i]
+		if(len(xijk) != 3):
+			exit(1)
+		uniqueValue += 81*(int(xijk[2])-1)
+		uniqueValue += 9*(int(xijk[1])-1)
+		uniqueValue += 1*(int(xijk[0])-1)
+		unqiueList[i] = uniqueValue+1
+	return unqiueList
+
+def xijkString(puzzle):
+	"""
+	Takes a puzzle string and puts it
+	into Xijk format
+	"""
+	result = ""
+	for i in range(0,len(puzzle)):
+		char = puzzle[i]
+		column = i%9+1
+		row = i/9 + 1
+		if(char != '*'):
+			info = str(column) + str(row) + char + ','
+			result += info
+	return result[0:-1]
 
 def printPuzzle(index, puzzle):
     """takes a string representation of a sudoku puzzle
@@ -16,6 +43,7 @@ def printPuzzle(index, puzzle):
             print " " if puzzle[9*x + y] == '*' else puzzle[9*x + y],
         print 
     print 
+    return puzzle.rstrip()
 
 def isValid(puzzle):
     """ takes string representation of a puzzle and
@@ -28,7 +56,12 @@ def isValid(puzzle):
     return puzzleset.issubset(valid_chars)
 
 def main():
-    [printPuzzle(ndx, x) for ndx,x in enumerate(open(sys.argv[1], 'r')) if isValid(x.rstrip())]
+    puzzlelist = [printPuzzle(ndx, x) for ndx,x in enumerate(open(sys.argv[1], 'r')) if isValid(x.rstrip())]
+    xijkList = xijkString(puzzlelist[3])
+    xijk = xijkList.split(',')
+    print xijk
+    templist = uniqueInteger(xijk)
+    print templist
 
 
 if __name__ == "__main__":
