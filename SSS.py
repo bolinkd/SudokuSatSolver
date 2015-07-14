@@ -22,7 +22,6 @@ def uniqueInteger(xijkList):
 		unqiueList[i] = uniqueValue+1
 	return unqiueList
 
-
 def xijkString(puzzle):
 	"""
 	Takes a puzzle string and puts it
@@ -76,7 +75,6 @@ def main():
     EveryNumberOnceInRow()
     EveryNumberOnceInColumn()
     EveryNumberOnceInBox()
-
 
 
 if __name__ == "__main__":
