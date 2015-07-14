@@ -1,14 +1,17 @@
 import sys
 
-def uniqueInteger(value):
-	returnValue = 0
-	if(len(value) != 3):
-		exit(1)
-	returnValue += 81*(int(value[2])-1)
-	returnValue += 9*(int(value[1])-1)
-	returnValue += 1*(int(value[0])-1)
-
-	return returnValue+1
+def uniqueInteger(xijkList):
+	unqiueList = xijkList
+	for i in range(0,len(xijkList)):
+		uniqueValue = 0
+		xijk = xijkList[i]
+		if(len(xijk) != 3):
+			exit(1)
+		uniqueValue += 81*(int(xijk[2])-1)
+		uniqueValue += 9*(int(xijk[1])-1)
+		uniqueValue += 1*(int(xijk[0])-1)
+		unqiueList[i] = uniqueValue+1
+	return unqiueList
 
 
 def xijkString(puzzle):
@@ -57,9 +60,9 @@ def main():
     xijkList = xijkString(puzzlelist[3])
     xijk = xijkList.split(',')
     print xijk
-    for value in xijk:
-    	temp = uniqueInteger(value)
-        print temp,
+    templist = uniqueInteger(xijk)
+    print templist
+
 
 
 if __name__ == "__main__":
