@@ -20,7 +20,22 @@ example: 1**3*******************************************************************
 has a 1 in the top corner, a 3 in the fourth column of the first row and a 9 in the bottom right corner\n\
 input: "
     puzzle = raw_input(prompt)
+    valid_chars = ['0','1','2','3','4','5','6','7','8','9','*']
+
+    if(len(puzzle) != 81):
+    	print "Incorrect Puzzle Length" + len(puzzle)
+    	exit(1)
+
+    for i in range(0,len(puzzle)):
+    	char = puzzle[i]
+    	if(char not in valid_chars):
+    		print "Incorrect Character " + str(char)
+    		exit(1)
+
+
     printPuzzle(puzzle)
+
+
 
 
 if __name__ == "__main__":
