@@ -3,16 +3,16 @@ import sys
 def HeaderInfo(output, num_clauses):
 	output.write("p cnf 729 "+str(num_clauses)+"\n")
 
-def EveryCellOneNumber():
+def EveryCellOneNumber(output):
 	pass
 
-def EveryNumberOnceInRow():
+def EveryNumberOnceInRow(output):
 	pass
 
-def EveryNumberOnceInColumn():
+def EveryNumberOnceInColumn(output):
 	pass
 
-def EveryNumberOnceInBox():
+def EveryNumberOnceInBox(output):
 	pass
 
 def PuzzleToBooleans(puzzle):
@@ -59,11 +59,10 @@ def main():
         HeaderInfo(fp, len(puzzle) + num_clauses_static)
         for expr in puzzle:
             fp.write(str(expr) + " 0\n")
-    
-    EveryCellOneNumber()
-    EveryNumberOnceInRow()
-    EveryNumberOnceInColumn()
-    EveryNumberOnceInBox()
+            EveryCellOneNumber(fp)
+            EveryNumberOnceInRow(fp)
+            EveryNumberOnceInColumn(fp)
+            EveryNumberOnceInBox(fp)
 
 
 if __name__ == "__main__":
