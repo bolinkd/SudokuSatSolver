@@ -4,13 +4,9 @@ def uniqueInteger(value):
 	returnValue = 0
 	if(len(value) != 3):
 		exit(1)
-	for i in range(0,len(value)):
-		if(i == 0):
-			returnValue += 81*(int(value[0])-1)
-		if(i == 1):
-			returnValue += 9*(int(value[0])-1)
-		if(i == 2):
-			returnValue += 1*(int(value[0])-1)
+	returnValue += 81*(int(value[2])-1)
+	returnValue += 9*(int(value[1])-1)
+	returnValue += 1*(int(value[0])-1)
 
 	return returnValue+1
 
