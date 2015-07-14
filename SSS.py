@@ -1,61 +1,43 @@
 import sys
 
-def HeaderInfo():
-	print
+def HeaderInfo(output, num_clauses):
+	output.write("p cnf 729 "+str(num_clauses)+"\n")
+
 def EveryCellOneNumber():
-	print
+	pass
+
 def EveryNumberOnceInRow():
-	print
+	pass
+
 def EveryNumberOnceInColumn():
-	print
+	pass
+
 def EveryNumberOnceInBox():
-	print
+	pass
 
-def uniqueInteger(xijkList):
-	unqiueList = xijkList
-	for i in range(0,len(xijkList)):
-		uniqueValue = 0
-		xijk = xijkList[i]
-		if(len(xijk) != 3):
-			exit(1)
-		uniqueValue += 81*(int(xijk[2])-1)
-		uniqueValue += 9*(int(xijk[1])-1)
-		uniqueValue += 1*(int(xijk[0])-1)
-		unqiueList[i] = uniqueValue+1
-	return unqiueList
-
-def xijkString(puzzle):
+def PuzzleToBooleans(puzzle):
 	"""
-	Takes a puzzle string and puts it
-	into Xijk format
+	Converts a puzzle to a list of variables that must be True for the SAT solver
 	"""
-	result = ""
-	for i in range(0,len(puzzle)):
-		char = puzzle[i]
-		column = i%9+1
-		row = i/9 + 1
-		if(char != '*'):
-			info = str(column) + str(row) + char + ','
-			result += info
-	return result[0:-1]
+	return [81*(ndx%9) + 9*(ndx/9) + int(char) for ndx, char in enumerate(puzzle) if char.isdigit()]
 
-def printPuzzle(index, puzzle):
-    """takes a string representation of a sudoku puzzle
+def PrettifyPuzzle(puzzle):
+    """
+    takes a string representation of a sudoku puzzle
     and prints it out in pretty format!
     """
-    print "Puzzle " + str(index+1)
+    pretty_puzzle = ""
     for x in xrange(9):
         if x % 3 == 0 and x != 0:
-            print"--"*11
+            pretty_puzzle += "--"*11 + "\n"
         for y in xrange(9):
             if y % 3 == 0 and y != 0:
-                print"|",
-            print " " if puzzle[9*x + y] == '*' else puzzle[9*x + y],
-        print 
-    print 
-    return puzzle.rstrip()
+                pretty_puzzle += "| "
+            pretty_puzzle += "  " if puzzle[9*x + y] == '*' else puzzle[9*x + y]+" "
+        pretty_puzzle += "\n"
+    return pretty_puzzle
 
-def isValid(puzzle):
+def IsValid(puzzle):
     """ takes string representation of a puzzle and
     returns if it is valid or not
     """
@@ -66,16 +48,18 @@ def isValid(puzzle):
     return puzzleset.issubset(valid_chars)
 
 def main():
-    puzzlelist = [printPuzzle(ndx, x) for ndx,x in enumerate(open(sys.argv[1], 'r')) if isValid(x.rstrip())]
-    xijkList = xijkString(puzzlelist[3])
-    xijk = xijkList.split(',')
-    print xijk
-    templist = uniqueInteger(xijk)
-    print templist
-
-
-    fp = open("output.txt", "w");
-    HeaderInfo()
+    puzzlelist = (x for x in open(sys.argv[1], 'r') if IsValid(x.rstrip()))
+    # print "\n".join([PrettifyPuzzle(x) for x in puzzlelist])
+    puzzlebools = (PuzzleToBooleans(x) for x in puzzlelist)
+    # print "\n".join([str(x) for x in puzzlebools])
+    
+    num_clauses_static = 2835
+    for ndx, puzzle in enumerate(puzzlebools):
+        fp = open("output"+str(ndx)+".txt", "w")
+        HeaderInfo(fp, len(puzzle) + num_clauses_static)
+        for expr in puzzle:
+            fp.write(str(expr) + " 0\n")
+    
     EveryCellOneNumber()
     EveryNumberOnceInRow()
     EveryNumberOnceInColumn()
