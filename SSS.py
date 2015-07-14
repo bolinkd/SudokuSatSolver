@@ -1,5 +1,20 @@
 import sys
 
+def uniqueInteger(value):
+	returnValue = 0
+	if(len(value) != 3):
+		exit(1)
+	for i in range(0,len(value)):
+		if(i == 0):
+			returnValue += 81*(int(value[0])-1)
+		if(i == 1):
+			returnValue += 9*(int(value[0])-1)
+		if(i == 2):
+			returnValue += 1*(int(value[0])-1)
+
+	return returnValue+1
+
+
 def xijkString(puzzle):
 	"""
 	Takes a puzzle string and puts it
@@ -55,8 +70,11 @@ input: "
 
     printPuzzle(puzzle)
 
-    xijk = xijkString(puzzle)
-    print xijk
+    xijkList = xijkString(puzzle)
+
+    xijk = xijkList.split(',')
+    for value in xijk:
+    	temp = uniqueInteger(value)
 
 
 
