@@ -1,13 +1,15 @@
 import sys
 
-
+def HeaderInfo():
+	print
 def EveryCellOneNumber():
-
+	print
 def EveryNumberOnceInRow():
-
+	print
 def EveryNumberOnceInColumn():
-
+	print
 def EveryNumberOnceInBox():
+	print
 
 def uniqueInteger(xijkList):
 	unqiueList = xijkList
@@ -71,6 +73,9 @@ def main():
     templist = uniqueInteger(xijk)
     print templist
 
+
+    fp = open("output.txt", "w");
+    HeaderInfo()
     EveryCellOneNumber()
     EveryNumberOnceInRow()
     EveryNumberOnceInColumn()
