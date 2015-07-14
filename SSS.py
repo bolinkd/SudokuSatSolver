@@ -23,8 +23,7 @@ def PuzzleToBooleans(puzzle):
 
 def PrettifyPuzzle(puzzle):
     """
-    takes a string representation of a sudoku puzzle
-    and prints it out in pretty format!
+    takes a string representation of a sudoku puzzle and prints it out in pretty format!
     """
     pretty_puzzle = ""
     for x in xrange(9):
@@ -38,8 +37,8 @@ def PrettifyPuzzle(puzzle):
     return pretty_puzzle
 
 def IsValid(puzzle):
-    """ takes string representation of a puzzle and
-    returns if it is valid or not
+    """ 
+    takes string representation of a puzzle and returns if it is valid or not
     """
     if(len(puzzle) != 81):
         return False
@@ -55,14 +54,14 @@ def main():
     
     num_clauses_static = 2835
     for ndx, puzzle in enumerate(puzzlebools):
-        fp = open("output"+str(ndx)+".txt", "w")
-        HeaderInfo(fp, len(puzzle) + num_clauses_static)
-        for expr in puzzle:
-            fp.write(str(expr) + " 0\n")
+        with open("output"+str(ndx)+".txt", "w") as fp:
+            HeaderInfo(fp, len(puzzle) + num_clauses_static)
             EveryCellOneNumber(fp)
             EveryNumberOnceInRow(fp)
             EveryNumberOnceInColumn(fp)
             EveryNumberOnceInBox(fp)
+            for expr in puzzle:
+                fp.write(str(expr) + " 0\n")
 
 
 if __name__ == "__main__":
