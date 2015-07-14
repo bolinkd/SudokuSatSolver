@@ -1,5 +1,14 @@
 import sys
 
+
+def EveryCellOneNumber():
+
+def EveryNumberOnceInRow():
+
+def EveryNumberOnceInColumn():
+
+def EveryNumberOnceInBox():
+
 def uniqueInteger(xijkList):
 	unqiueList = xijkList
 	for i in range(0,len(xijkList)):
@@ -62,6 +71,11 @@ def main():
     print xijk
     templist = uniqueInteger(xijk)
     print templist
+
+    EveryCellOneNumber()
+    EveryNumberOnceInRow()
+    EveryNumberOnceInColumn()
+    EveryNumberOnceInBox()
 
 
 
