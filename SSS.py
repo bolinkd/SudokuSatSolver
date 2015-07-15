@@ -4,7 +4,7 @@ import sys
 def RuleToBooleans(rules):
 	result = rules
 	for ndx, item in enumerate(rules):
-		result[ndx] = 81*(int(item[0])-1) + 9*(int(item[1])-1) + int(item[2])
+		result[ndx] = 81*(int(item[0])-1) + 9*(int(item[1])-1) + (int(item[2])-1) + 1 
 	return result
 
 def HeaderInfo(output, num_clauses):
@@ -24,7 +24,17 @@ def EveryCellOneNumber(output):
 
 
 def EveryNumberOnceInRow(output):
-	pass
+	for i in range(1,10):
+		for k in range(1,10):
+			for j in range(1,9):
+				for l in range(j+1, 10):
+					rule = []
+					rule.append(str(i)+str(j)+str(k))
+					rule.append(str(i)+str(l)+str(k))
+					printable = ""
+					for boolean in RuleToBooleans(rule):
+						printable += "-" + str(boolean) + " "
+					output.write(printable + "0\n")
 
 def EveryNumberOnceInColumn(output):
 	pass
