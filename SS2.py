@@ -1,9 +1,7 @@
 import sys
 
 def PrettifyPuzzle(puzzle):
-    """
-    takes a string representation of a sudoku puzzle and prints it out in pretty format!
-    """
+    # takes a string representation of a sudoku puzzle and prints it out in pretty format!
     pretty_puzzle = ""
     for x in xrange(9):
         if x % 3 == 0 and x != 0:
@@ -26,6 +24,8 @@ def main():
 				result.append(int(value))
 	if(len(result) == 81):
 		pass
+
+	# result = [x for x in open(sys.argv[1], 'r').read().split() if int(value) > 0]
 
 	for ndx, value in enumerate(result):
 		value = value - 1
