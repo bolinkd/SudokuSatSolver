@@ -37,10 +37,49 @@ def EveryNumberOnceInRow(output):
 					output.write(printable + "0\n")
 
 def EveryNumberOnceInColumn(output):
-	pass
+	for j in range(1,10):
+		for k in range(1,10):
+			for i in range(1,9):
+				for l in range(i+1, 10):
+					rule = []
+					rule.append(str(i)+str(j)+str(k))
+					rule.append(str(l)+str(j)+str(k))
+					printable = ""
+					for boolean in RuleToBooleans(rule):
+						printable += "-" + str(boolean) + " "
+					output.write(printable + "0\n")
 
 def EveryNumberOnceInBox(output):
-	pass
+	for k in range(1,10):
+		for a in range(0,3):
+			for b in range(0,3):
+				for u in range(1,4):
+					for v in range(1,3):
+						for w in range(v+1,3):
+							rule = []
+							rule.append(str(3*a+u)+str(3*b+v)+str(k))
+							rule.append(str(3*a+u)+str(3*b+w)+str(k))
+							printable = ""
+							for boolean in RuleToBooleans(rule):
+								printable += "-" + str(boolean) + " "
+							output.write(printable + "0\n")
+	for k in range(1,10):
+		for a in range(0,3):
+			for b in range(0,3):
+				for u in range(1,3):
+					for v in range(1,4):
+						for w in range(u+1,4):
+							for t in range(1,4):
+								rule = []
+								rule.append(str(3*a+u)+str(3*b+v)+str(k))
+								rule.append(str(3*a+w)+str(3*b+t)+str(k))
+								printable = ""
+								for boolean in RuleToBooleans(rule):
+									printable += "-" + str(boolean) + " "
+								output.write(printable + "0\n")
+
+
+							
 
 def PuzzleToBooleans(puzzle):
 	"""
@@ -79,7 +118,7 @@ def main():
     puzzlebools = (PuzzleToBooleans(x) for x in puzzlelist)
     # print "\n".join([str(x) for x in puzzlebools])
     
-    num_clauses_static = 2835
+    num_clauses_static = 8343
     for ndx, puzzle in enumerate(puzzlebools):
         with open("output"+str(ndx)+".txt", "w") as fp:
             HeaderInfo(fp, len(puzzle) + num_clauses_static)
