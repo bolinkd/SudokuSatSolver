@@ -1,10 +1,27 @@
 import sys
 
+
+def RuleToBooleans(rules):
+	result = rules
+	for ndx, item in enumerate(rules):
+		result[ndx] = 81*(int(item[0])-1) + 9*(int(item[1])-1) + int(item[2])
+	return result
+
 def HeaderInfo(output, num_clauses):
 	output.write("p cnf 729 "+str(num_clauses)+"\n")
 
 def EveryCellOneNumber(output):
-	pass
+	for i in range(1,10):
+		for j in range(1,10):
+			rule = []
+			for k in range(1,10):
+				rule.append(str(i)+str(j)+str(k))
+			printable = ""
+			for boolean in RuleToBooleans(rule):
+				printable += str(boolean) + " "
+			output.write(printable + "0\n")
+
+
 
 def EveryNumberOnceInRow(output):
 	pass
