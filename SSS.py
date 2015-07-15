@@ -11,17 +11,8 @@ def HeaderInfo(output, num_clauses):
 	output.write("p cnf 729 "+str(num_clauses)+"\n")
 
 def EveryCellOneNumber(output):
-	for i in range(1,10):
-		for j in range(1,10):
-			rule = []
-			for k in range(1,10):
-				rule.append(str(i)+str(j)+str(k))
-			printable = ""
-			for boolean in RuleToBooleans(rule):
-				printable += str(boolean) + " "
-			output.write(printable + "0\n")
-
-
+	# Every cell must contain at least one number!
+    output.write(''.join((str(ndx) + " 0\n" if ndx % 9 == 0 else str(ndx) + " " for ndx in xrange(1, 730))))
 
 def EveryNumberOnceInRow(output):
 	for i in range(1,10):
@@ -82,15 +73,11 @@ def EveryNumberOnceInBox(output):
 							
 
 def PuzzleToBooleans(puzzle):
-	"""
-	Converts a puzzle to a list of variables that must be True for the SAT solver
-	"""
+	# Converts a puzzle string to a list of variables that must be True for the SAT solver
 	return [81*(ndx%9) + 9*(ndx/9) + int(char) for ndx, char in enumerate(puzzle) if char.isdigit()]
 
 def PrettifyPuzzle(puzzle):
-    """
-    takes a string representation of a sudoku puzzle and prints it out in pretty format!
-    """
+    # takes a string representation of a sudoku puzzle and prints it out in pretty format!
     pretty_puzzle = ""
     for x in xrange(9):
         if x % 3 == 0 and x != 0:
@@ -103,9 +90,7 @@ def PrettifyPuzzle(puzzle):
     return pretty_puzzle
 
 def IsValid(puzzle):
-    """ 
-    takes string representation of a puzzle and returns if it is valid or not
-    """
+    # takes string representation of a puzzle and returns if it is valid or not
     if(len(puzzle) != 81):
         return False
     valid_chars = {'0','1','2','3','4','5','6','7','8','9','*'}
@@ -114,10 +99,7 @@ def IsValid(puzzle):
 
 def main():
     puzzlelist = (x for x in open(sys.argv[1], 'r') if IsValid(x.rstrip()))
-    # print "\n".join([PrettifyPuzzle(x) for x in puzzlelist])
     puzzlebools = (PuzzleToBooleans(x) for x in puzzlelist)
-    # print "\n".join([str(x) for x in puzzlebools])
-    
     num_clauses_static = 8343
     for ndx, puzzle in enumerate(puzzlebools):
         with open("output"+str(ndx)+".txt", "w") as fp:
@@ -126,8 +108,7 @@ def main():
             EveryNumberOnceInRow(fp)
             EveryNumberOnceInColumn(fp)
             EveryNumberOnceInBox(fp)
-            for expr in puzzle:
-                fp.write(str(expr) + " 0\n")
+            fp.write(" 0\n".join((str(expr) for expr in puzzle)) + " 0\n")
 
 
 if __name__ == "__main__":
