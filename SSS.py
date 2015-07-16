@@ -1,8 +1,15 @@
+import glob
+import os
+import subprocess
 import sys
 
 def convert10to9(hundreds, tens, ones):
 	# converts a base 10 number to base 9
 	return str(81 * (hundreds-1) + 9 * (tens-1) + ones)
+
+def convert9to10(number):
+	# converts a base 9 number [1,729] to base 10
+	return (number-1)/81*100+100 + (number-1)%81/9*10+10 + (number-1)%81%9+1
 
 def HeaderInfo(output, num_clauses):
 	output.write("p cnf 729 "+str(num_clauses)+"\n")
@@ -53,18 +60,41 @@ def IsValid(puzzle):
     puzzleset = set(puzzle)
     return puzzleset.issubset(valid_chars)
 
+def PrintPrettyPuzzle(puzzle):
+    # prints a the output variables from SAT prettily!
+    for ndx, value in enumerate(puzzle):
+    	if ndx%9 == 0 and ndx != 0:
+            print
+    	if ndx%27 == 0 and ndx != 0:
+    		print "-"*21
+    	if ndx%3 == 0 and ndx%9 != 0:
+        	print "|",
+        print value%100%10,
+    print '\n'
+
 def main():
+    files = glob.glob('./outputs/*')
+    for f in files:
+        os.remove(f)
     puzzlelist = (x for x in open(sys.argv[1], 'r') if IsValid(x.rstrip()))
     puzzlebools = (PuzzleToBooleans(x) for x in puzzlelist)
     num_clauses_static = 8343
     for ndx, puzzle in enumerate(puzzlebools):
-        with open("output" + str(ndx) + ".txt", "w") as fp:
+    	filename = 'outputs/' + sys.argv[0] + '.SATinput' + str(ndx) + '.txt'
+    	filename2 = 'outputs/' + sys.argv[0] + '.SAToutput' + str(ndx) + '.txt'
+        with open(filename, "w") as fp:
             HeaderInfo(fp, len(puzzle) + num_clauses_static)
             EveryCellOneNumber(fp)
             EveryNumberOnceInRow(fp)
             EveryNumberOnceInColumn(fp)
             EveryNumberOnceInBox(fp)
             fp.write(" 0\n".join(puzzle) + " 0\n")
+        with open(os.devnull, 'w') as FNULL:
+            subprocess.call(["./minisat", filename, filename2], stdout=FNULL)
+        result = [convert9to10(int(x)) for x in open(filename2, 'r').read().split() if x.isdigit() and int(x) > 0]
+        result2 = (result[9*x%81+x/9] for x in xrange(len(result)))
+        print "Solution for valid input #" + str(ndx)
+        PrintPrettyPuzzle(result2)
 
 if __name__ == "__main__":
     main()
