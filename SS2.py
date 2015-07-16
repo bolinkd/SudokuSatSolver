@@ -35,11 +35,13 @@ def main():
 		value = value%9
 		k = value+1
 		result[ndx] = str(i) + str(j) + str(k)
-	print result
+
 	puzzle = ""
-	for number in result:
-		puzzle += number[2];
-	print puzzle
+	for i in range(0,9):
+		ijklist = result[i::9]
+		for ijk in ijklist:
+			puzzle+=ijk[2]
+
 	print PrettifyPuzzle(puzzle)
 
 
