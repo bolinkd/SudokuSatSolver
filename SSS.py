@@ -2,6 +2,7 @@ import glob
 import os
 import subprocess
 import sys
+import timeit
 
 def convert10to9(hundreds, tens, ones):
 	# converts a base 10 number to base 9
@@ -89,11 +90,19 @@ def main():
             EveryNumberOnceInColumn(fp)
             EveryNumberOnceInBox(fp)
             fp.write(" 0\n".join(puzzle) + " 0\n")
-        with open(os.devnull, 'w') as FNULL:
-            subprocess.call(["./minisat", filename, filename2], stdout=FNULL)
+        # this code times 500 repititions of sat solving the puzzle
+        reps = 500
+        setup = """import subprocess; \
+            import os; \
+            filename = '%s'; \
+            filename2 = '%s'; \
+            FNULL = open(os.devnull, 'w')
+        """ % (filename, filename2)
+        time_taken = min(timeit.Timer(stmt = """subprocess.call(["./minisat", filename, filename2], stdout=FNULL)""", setup=setup).repeat(500, 1))
         result = [convert9to10(int(x)) for x in open(filename2, 'r').read().split() if x.isdigit() and int(x) > 0]
         result2 = (result[9*x%81+x/9] for x in xrange(len(result)))
         print "Solution for valid input #" + str(ndx)
+        print "minimum time: " + str(time_taken)
         PrintPrettyPuzzle(result2)
 
 if __name__ == "__main__":
