@@ -3,6 +3,7 @@ import os
 import subprocess
 import sys
 import timeit
+import altencode
 
 def convert10to9(hundreds, tens, ones):
 	# converts a base 10 number to base 9

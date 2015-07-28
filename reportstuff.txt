@@ -1,0 +1,19 @@
+Notably on Peter Norvig's custom sudoku solver this is the hardest of a number of randomly generated puzzles:
+
+.....6....59.....82....8....45........3........6..3.54...325..6..................
+
+It takes 188.79 seconds to solve using his backtracking sudoku method. The SAT solver method doesn't have such variability in the results (All puzzles tested are similar timescale regardless of input "difficulty"). 
+
+Solution for valid input #0
+minimum time: 0.00442314147949
+3 7 8 | 5 1 6 | 4 2 9
+6 5 9 | 2 3 4 | 7 1 8
+2 1 4 | 7 9 8 | 3 6 5
+---------------------
+7 4 5 | 6 8 1 | 2 9 3
+1 9 3 | 4 5 2 | 6 8 7
+8 2 6 | 9 7 3 | 1 5 4
+---------------------
+4 8 1 | 3 2 5 | 9 7 6
+5 3 7 | 1 6 9 | 8 4 2
+9 6 2 | 8 4 7 | 5 3 1
