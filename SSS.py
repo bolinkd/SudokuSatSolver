@@ -5,6 +5,9 @@ import sys
 import timeit
 import altencode
 
+# How many times to run SAT on each input to get an accurate timing
+timer_reps = 5
+
 def convert10to9(hundreds, tens, ones):
 	# converts a base 10 number to base 9
 	return str(81 * (hundreds-1) + 9 * (tens-1) + ones)
@@ -68,43 +71,67 @@ def PrintPrettyPuzzle(puzzle):
     	if ndx%9 == 0 and ndx != 0:
             print
     	if ndx%27 == 0 and ndx != 0:
-    		print "-"*21
+    		print "-"*6+"+"+"-"*7+"+"+"-"*6
     	if ndx%3 == 0 and ndx%9 != 0:
         	print "|",
         print value%100%10,
     print '\n'
+
+def writeToFile(puzzle, filename, alt=None):
+    num_clauses_static = 8343
+    if alt:
+        with open(filename, "w") as fp:
+            altencode.HeaderInfo(fp, len(puzzle[0]) + num_clauses_static)
+            altencode.EveryCellOneNumber(fp)
+            altencode.EveryNumberOnceInRow(fp)
+            altencode.EveryNumberOnceInColumn(fp)
+            altencode.EveryNumberOnceInBox(fp)
+            fp.write(" 0\n".join(puzzle) + " 0\n")
+    else:
+        with open(filename, "w") as fp:
+            HeaderInfo(fp, len(puzzle[0]) + num_clauses_static)
+            EveryCellOneNumber(fp)
+            EveryNumberOnceInRow(fp)
+            EveryNumberOnceInColumn(fp)
+            EveryNumberOnceInBox(fp)
+            fp.write(" 0\n".join(puzzle) + " 0\n")
+
+def timeSAT(input_filename, output_filename):
+    reps = 500
+    setup = """import subprocess; \
+        import os; \
+        SATinput = '%s'; \
+        SAToutput = '%s'; \
+        FNULL = open(os.devnull, 'w')
+    """ % (input_filename, output_filename)
+    return min(timeit.Timer(stmt = """subprocess.call(["./minisat", SATinput, SAToutput], stdout=FNULL)""", setup=setup).repeat(timer_reps, 1))
 
 def main():
     files = glob.glob('./outputs/*')
     for f in files:
         os.remove(f)
     puzzlelist = (x for x in open(sys.argv[1], 'r') if IsValid(x.rstrip()))
-    puzzlebools = (PuzzleToBooleans(x) for x in puzzlelist)
-    num_clauses_static = 8343
+    puzzlebools = ((PuzzleToBooleans(x), altencode.PuzzleToBooleans(x)) for x in puzzlelist)
+    difference = 0
     for ndx, puzzle in enumerate(puzzlebools):
-    	filename = 'outputs/' + sys.argv[0] + '.SATinput' + str(ndx) + '.txt'
-    	filename2 = 'outputs/' + sys.argv[0] + '.SAToutput' + str(ndx) + '.txt'
-        with open(filename, "w") as fp:
-            HeaderInfo(fp, len(puzzle) + num_clauses_static)
-            EveryCellOneNumber(fp)
-            EveryNumberOnceInRow(fp)
-            EveryNumberOnceInColumn(fp)
-            EveryNumberOnceInBox(fp)
-            fp.write(" 0\n".join(puzzle) + " 0\n")
-        # this code times 500 repititions of sat solving the puzzle
-        reps = 500
-        setup = """import subprocess; \
-            import os; \
-            filename = '%s'; \
-            filename2 = '%s'; \
-            FNULL = open(os.devnull, 'w')
-        """ % (filename, filename2)
-        time_taken = min(timeit.Timer(stmt = """subprocess.call(["./minisat", filename, filename2], stdout=FNULL)""", setup=setup).repeat(500, 1))
-        result = [convert9to10(int(x)) for x in open(filename2, 'r').read().split() if x.isdigit() and int(x) > 0]
-        result2 = (result[9*x%81+x/9] for x in xrange(len(result)))
+    	SATinput = 'outputs/' + sys.argv[0] + '.SATinput' + str(ndx) + '.txt'
+    	SAToutput = 'outputs/' + sys.argv[0] + '.SAToutput' + str(ndx) + '.txt'
+        SATinputalt = 'outputs/' + sys.argv[0] + '.SATinputalt' + str(ndx) + '.txt'
+        SAToutputalt = 'outputs/' + sys.argv[0] + '.SAToutputalt' + str(ndx) + '.txt'
+        writeToFile(puzzle[0], SATinput)
+        writeToFile(puzzle[1], SATinputalt, alt=True)
+        
+        time_taken = timeSAT(SATinput, SAToutput)
+        time_taken_alt = timeSAT(SATinputalt, SAToutputalt)
+        difference += time_taken_alt - time_taken
         print "Solution for valid input #" + str(ndx)
-        print "minimum time: " + str(time_taken)
+        print "Min encoding time: " + str(time_taken)
+        print "Alt encoding time: " + str(time_taken_alt)
+
+        result = [convert9to10(int(x)) for x in open(SAToutput, 'r').read().split() if x.isdigit() and int(x) > 0]
+        result2 = (result[9*x%81+x/9] for x in xrange(len(result)))
         PrintPrettyPuzzle(result2)
+    print "Average difference in minimal and standard encoding: " + str(difference/ndx)
 
 if __name__ == "__main__":
     main()
