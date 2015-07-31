@@ -6,7 +6,7 @@ import timeit
 import altencode
 
 # How many times to run SAT on each input to get an accurate timing
-timer_reps = 5
+timer_reps = 50
 
 def convert10to9(hundreds, tens, ones):
 	# converts a base 10 number to base 9
