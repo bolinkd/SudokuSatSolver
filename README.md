@@ -2,9 +2,9 @@
 [![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/bolinkd/SudokuSatSolver/)
 [![Language](https://img.shields.io/badge/language-python-brightgreen.svg)](https://www.python.org/download/releases/2.7/)
 
-Sudoku SAT Solver for CSC320
+#Sudoku SAT Solver for CSC320
 
-To run put string encoded sudoku puzzles in a text file and
+###To run put string encoded sudoku puzzles in a text file and
 
 $ python SSS.py [filename]
 
@@ -31,7 +31,7 @@ where blank spaces are represented by a wildcard (*.?0 are the acceptable wildca
 
 The CNF input and SAT output filesare found in the outputs folder,
 
-To run the 16x16 verson oof the program use the command below:
+###To run the 16x16 verson oof the program use the command below:
 
 $ python SSS16.py [filename]
 
@@ -68,4 +68,5 @@ f 7 e d | 8 5 b 2 | c g 1 9 | a 4 6 3
 ```
 
 Sample inputs for the 9x9 Solver can be found in: sample.txt
+
 A Sample input for the 16x16 Solver can be found in: sample16.txt
