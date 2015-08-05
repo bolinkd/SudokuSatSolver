@@ -1,6 +1,5 @@
 CSC 320 Sudoku SAT Project
 Konrad Schultz & Dustin Bolink
-V00761540 & V00747883
 
 Introduction
 ============
