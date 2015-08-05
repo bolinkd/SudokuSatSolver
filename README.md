@@ -4,7 +4,7 @@
 
 #Sudoku SAT Solver for CSC320
 
-###To run put string encoded sudoku puzzles in a text file and
+#####To run the 9x9 verson of the program use the command below:
 
 $ python SSS.py [filename]
 
@@ -31,7 +31,7 @@ where blank spaces are represented by a wildcard (*.?0 are the acceptable wildca
 
 The CNF input and SAT output filesare found in the outputs folder,
 
-###To run the 16x16 verson oof the program use the command below:
+#####To run the 16x16 verson of the program use the command below:
 
 $ python SSS16.py [filename]
 
