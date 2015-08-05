@@ -6,7 +6,7 @@
 
 $ python SSS.py [filename]
 
-Sudoku puzzles must be of form:
+Sudoku puzzles must be of the form below:
 ```
 *****6****59*****82****8****45********3********6**3*54***325**6******************
 ```
